@@ -9,21 +9,16 @@ def sampleNeurons(numLayers, model, percentageNeuronsSampled):
 		currLayerNeurons = []
 		if 'fcl' in modelLayers[x][0]:
 			allNeurons = modelLayers[x][1]
-			numNeurons = length(allNeurons)
-			numToSample = numNeurons * percentageNeuronsSampled
-			currSampled = random.sample(list(range(0, numNeurons)), numToSample)
-			sampledNeurons.append([x, 1, currSampled])
-		
+			sampledNeurons.append(sampleFCLNeurons(allNeurons, percentageNeuronsSampled, x))
+			
 		# Not sure if convolutional layers utilize the exact same neuron format
 		# Need to look into it more	
 		else if 'conv' in modelLayers[x][0]:
 			allNeurons = modelLayers[x][1]
-			numNeurons = length(allNeurons)
-			numToSample = numNeurons * percentageNeuronsSampled
-			currSampled = random.sample(list(range(0, numNeurons)), numToSample)
-			sampledNeurons.append([x, 1, currSampled])
-		
+			sampledNeurons.append(sampleFCLNeurons(allNeurons, percentageNeuronsSampled, x))
+
 	return sampledNeurons
+	
 	# Return Format
 	# [[0, 1, [list of indices to prune]],
 	#  [1, 1, [list of indices to prune]],
@@ -33,3 +28,16 @@ def sampleNeurons(numLayers, model, percentageNeuronsSampled):
 	#  ..................................
 	#  [Number of Model Layers - 1, 1, [list of indices to prune]],
 	# ]
+
+
+def sampleFCLNeurons(layerNeurons, percentageNeuronsSampled, layerNum):
+	numNeurons = length(layerNeurons)
+	numToSample = numNeurons * percentageNeuronsSampled
+	currSampled = random.sample(list(range(0, numNeurons)), numToSample)
+	return [layerNum, 1, currSampled]
+
+def sampleConvNeurons(layerNeurons, percentageNeuronsSampled, layerNum):
+	numNeurons = length(layerNeurons)
+	numToSample = numNeurons * percentageNeuronsSampled
+	currSampled = random.sample(list(range(0, numNeurons)), numToSample)
+	return [layerNum, 1, currSampled]
