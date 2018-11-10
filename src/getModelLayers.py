@@ -34,7 +34,7 @@ def getModelLayers(model):
         if (not 'bn' in layer_name and not 'downsample' in layer_name and not 'pool' in layer_name):
             if 'weight' in layer_name:
                 pruningWeights[layer_name] = (params)
-            elif('bias' in modelLayers[i][0]):
+            elif('bias' in layer_name):
                 pruningBiases[layer_name] = (params)
     
     #append layers by (name, weights, biases) in cleanedLayers
