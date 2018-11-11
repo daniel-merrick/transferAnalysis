@@ -1,19 +1,18 @@
-from getModelLayers import getModelLayers as GML
+import numpy.random as random
+import math
 
-def sampleNeurons(numLayers, model, percentageNeuronsSampled):
-	totalNeuronsToSample = 0
-	totalNeurons = 0;
-	modelLayers = GML(model)
+def sampleNeurons(numLayers, modelLayers, percentageNeuronsSampled):
 	sampledNeurons = []
-	for x in range(length(modelLayers)):
-		currLayerNeurons = []
-		if 'fcl' in modelLayers[x][0]:
+        allNeurons = []
+	percentageNeuronsSampled = float(percentageNeuronsSampled)
+        for x in range(numLayers):
+                if 'fc' in modelLayers[x][0] or 'classifier' in modelLayers[x][0]:
 			allNeurons = modelLayers[x][1]
 			sampledNeurons.append(sampleFCLNeurons(allNeurons, percentageNeuronsSampled, x))
 			
 		# Not sure if convolutional layers utilize the exact same neuron format
 		# Need to look into it more	
-		else if 'conv' in modelLayers[x][0]:
+		elif 'conv' in modelLayers[x][0] or 'features' in modelLayers[x][0]:
 			allNeurons = modelLayers[x][1]
 			sampledNeurons.append(sampleFCLNeurons(allNeurons, percentageNeuronsSampled, x))
 
@@ -31,13 +30,13 @@ def sampleNeurons(numLayers, model, percentageNeuronsSampled):
 
 
 def sampleFCLNeurons(layerNeurons, percentageNeuronsSampled, layerNum):
-	numNeurons = length(layerNeurons)
-	numToSample = numNeurons * percentageNeuronsSampled
-	currSampled = random.sample(list(range(0, numNeurons)), numToSample)
+	numNeurons = len(layerNeurons)
+	numToSample = int(math.ceil(numNeurons * percentageNeuronsSampled) / 100.0)
+	currSampled = random.choice(list(range(0, numNeurons)), numToSample, replace=False)
 	return [layerNum, 1, currSampled]
 
 def sampleConvNeurons(layerNeurons, percentageNeuronsSampled, layerNum):
-	numNeurons = length(layerNeurons)
-	numToSample = numNeurons * percentageNeuronsSampled
-	currSampled = random.sample(list(range(0, numNeurons)), numToSample)
+	numNeurons = len(layerNeurons)
+        numToSample = int(math.ceil(numNeurons * percentageNeuronsSampled) / 100.0)
+        currSampled = random.choice(list(range(0, numNeurons)), numToSample, replace=False)
 	return [layerNum, 1, currSampled]

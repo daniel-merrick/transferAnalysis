@@ -1,3 +1,4 @@
+from collections import OrderedDict
 ##################################################################################################################################
 # def getModelLayers(model): is a function to return the layers of a model in a more clean and organized manner
 #                            that is efficient and easier for pruning purposes
@@ -26,8 +27,8 @@ def getModelLayers(model):
     sdict = model.state_dict()
     
     #these variables are used to help reorganize the layers
-    pruningWeights = dict()
-    pruningBiases = dict()
+    pruningWeights = OrderedDict()
+    pruningBiases = OrderedDict()
     
     #only add layers that are going to be pruned -- no need to add pooling layers or batch norm layers etc
     for (layer_name, params) in sdict.items():
@@ -36,7 +37,7 @@ def getModelLayers(model):
                 pruningWeights[layer_name] = (params)
             elif('bias' in layer_name):
                 pruningBiases[layer_name] = (params)
-    
+   
     #append layers by (name, weights, biases) in cleanedLayers
     cleanedLayers = []    
     for weightName, weights in pruningWeights.items():

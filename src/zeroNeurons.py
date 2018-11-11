@@ -26,7 +26,6 @@ def zeroWeight(weight_tensor):
 def zeroListOfWeightIndexes(list_of_weight_indexes, modelLayers):
     for layer_index, modelLayerSubIdx, weight_indexes in list_of_weight_indexes:
         
-        #1 for weights
         for input_index in weight_indexes:
             modelLayers[layer_index][modelLayerSubIdx][input_index] = zeroWeight(modelLayers[layer_index][modelLayerSubIdx][input_index])
 
